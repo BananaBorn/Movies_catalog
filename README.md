@@ -1,1 +1,1 @@
-# movie_catalog
+# movies_catalog
