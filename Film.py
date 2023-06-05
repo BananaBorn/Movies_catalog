@@ -192,7 +192,9 @@ while True:
                 content = get_content(genre)
                 try:
                     show_films(content, genre)
-                except:
+                except TypeError:
+                    print('\n- Фильмов не найдено -\n')
+                else:
                     print('\n- Фильмов не найдено -\n')
             if repeat_or_exit():
                 continue
