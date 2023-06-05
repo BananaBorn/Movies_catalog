@@ -73,7 +73,7 @@ def add_film(genre_: str, content_: Dict[str, List],
             min_num=1, max_num=2)
         if add_comment == 1:
             film_comment = input('Напишите комментарий >>> ')
-        elif add_comment == 2:
+        else:
             film_comment = '-----'
         new_film = dict(name=film_name, year=film_year,
                         comment=film_comment)
@@ -142,8 +142,8 @@ def repeat_or_exit() -> bool:
 # This func just for file 'Непросмотренные'
 def show_all(content_: Dict[str, List]) -> None:
     print(separator)
-    for genre, films in content_.items():
-        first = genre
+    for genre_, films in content_.items():
+        first = genre_
         for film in films:
             print(first, end='  |  ')
             for key, value in film.items():
