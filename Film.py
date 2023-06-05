@@ -1,6 +1,7 @@
 import json
 from typing import Dict, List
 
+
 # Checking all choices in program. Returns result of user choice like digit
 def checking_input(txt: str, min_num=1960, max_num=2060) -> int:
     while True:
@@ -136,10 +137,7 @@ def repeat_or_exit() -> bool:
         print(f'{i} - {value}')
     answer = checking_input('\nВыберите действие >>> ',
                             min_num=1, max_num=2)
-    if answer == 1:  # repeat
-        return True
-    elif answer == 2:  # go to main menu
-        return False
+    return answer == 1
 
 
 # This func just for file 'Непросмотренные'
