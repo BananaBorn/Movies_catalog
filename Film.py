@@ -1,5 +1,6 @@
 import json
 
+
 # Checking all choices in program. Returns result of user choice like digit
 def checking_input(txt, min_num=1960, max_num=2060):
     while True:
@@ -15,6 +16,7 @@ def checking_input(txt, min_num=1960, max_num=2060):
             continue
     return int(num)
 
+
 # returns the name of the genre
 def choice_genre(dict_genres):
     print()
@@ -25,6 +27,7 @@ def choice_genre(dict_genres):
     print(f'\nВыбранный жанр -> {dict_genres[num_of_genre]}')
     return dict_genres[num_of_genre]
 
+
 # Gets content from json file or make new json file
 def get_content(genre, in_file='Непросмотренные.json'):
     try:
@@ -32,9 +35,10 @@ def get_content(genre, in_file='Непросмотренные.json'):
             content = json.load(jsonfile)
     except:
         with open(in_file, 'w', encoding='utf-8-sig') as jsonfile:
-            content = {genre : []}
+            content = {genre: []}
             json.dump(content, jsonfile, indent=4, ensure_ascii=False)
     return content
+
 
 # Checks if the new film is in the json file
 def checks_new_film(film_name, film_year, content):
@@ -52,6 +56,7 @@ def checks_new_film(film_name, film_year, content):
         content[genre] = []
     return flag
 
+
 # Adds new film in json file (rewriting json file)
 def add_film(genre, content, file='Непросмотренные.json'):
     while True:
@@ -59,7 +64,7 @@ def add_film(genre, content, file='Непросмотренные.json'):
         film_name = input_name.strip()
         film_year = checking_input('Введите год фильма >>> ')
         if checks_new_film(film_name, film_year, content):
-            break    
+            break
         add_comment = checking_input(
             'Добавить комментарий?: 1 - ДА ; 2 - НЕТ >>> ',
             min_num=1, max_num=2)
@@ -79,6 +84,7 @@ def add_film(genre, content, file='Непросмотренные.json'):
             print('\n- Произошла ошибка! -\n')
         break
 
+
 # Show all films in chosen genre
 def show_films(content, genre):
     films_list = content[genre]
@@ -88,16 +94,17 @@ def show_films(content, genre):
     for n, kino in enumerate(films_list, 1):
         print(f'{n})', end=' ')
         show_list = ([f'{values}   |   ' for keys,
-                      values in kino.items()])
+        values in kino.items()])
         print(*show_list)
     print(separator)
+
 
 # Delete film from content and rewriting json file
 def delete_film(genre, content, file='Непросмотренные.json'):
     input_name = input('Введите название фильма >>> ')
     film_name = input_name.strip()
     film_year = checking_input('Введите год фильма >>> ')
-    new_content = {genre : []}
+    new_content = {genre: []}
     try:
         for line in content[genre]:
             old_name = line['name'].strip()
@@ -118,6 +125,7 @@ def delete_film(genre, content, file='Непросмотренные.json'):
     except:
         print('\n- Фильм НЕ НАЙДЕН! -\n')
 
+
 # Func for choose repeat or go to main menu
 def repeat_or_exit():
     exit_choice = ['Повторить действие', 'Выйти в главное меню']
@@ -125,10 +133,11 @@ def repeat_or_exit():
         print(f'{i} - {value}')
     answer = checking_input('\nВыберите действие >>> ',
                             min_num=1, max_num=2)
-    if answer == 1:              # repeat
+    if answer == 1:  # repeat
         return True
-    elif answer == 2:            # main menu
+    elif answer == 2:  # main menu
         return False
+
 
 # This func just for file 'Непросмотренные'
 def show_all(content):
@@ -139,31 +148,31 @@ def show_all(content):
             print(first, end='  |  ')
             for key, value in film.items():
                 print(value, end='   |   ')
-            print()        
+            print()
     print(separator)
 
+
 genres_dict = {
-        1 : "Боевики", 2 : "Комедии", 3 : "Фантастика",
-        4 : "Ужасы", 5 : "Мультфильмы", 6 : "Катастрофы",
-        7 : "Супергерои", 8 : "Фэнтези", 9 : "Приключения",
-        10 : "Псевдодокументальные", 11 : "Детективы",
-        12 : "Про инопланетян", 13 : "Про демонов", 14 : "Вампиры",
-        15 : "Зомби", 16 : "Космос", 17 : "Постапокалипсис",
-        18 : "Сказки", 19 : "Рождество", 20 : "Достойные",
+    1: "Боевики", 2: "Комедии", 3: "Фантастика",
+    4: "Ужасы", 5: "Мультфильмы", 6: "Катастрофы",
+    7: "Супергерои", 8: "Фэнтези", 9: "Приключения",
+    10: "Псевдодокументальные", 11: "Детективы",
+    12: "Про инопланетян", 13: "Про демонов", 14: "Вампиры",
+    15: "Зомби", 16: "Космос", 17: "Постапокалипсис",
+    18: "Сказки", 19: "Рождество", 20: "Достойные",
 }
-separator = ('\n' + ('*'*50) + '\n')
+separator = ('\n' + ('*' * 50) + '\n')
 
 print('\n Добро пожаловать! \n')
 while True:
     with open('Main menu.txt', 'r', encoding='utf-8-sig') as file:
         menu = file.readlines()
         print(*menu)
-        # Maybe in future make in menu :
-        # 8 - Удалить ВСЕ фильмы из твоих каталогов
+
     menu_choice = checking_input('\nВыберите действие >>> ',
                                  min_num=1, max_num=7)
-    
-    if menu_choice == 1:    # Show films from 'Непросмотренные'
+
+    if menu_choice == 1:  # Show films from 'Непросмотренные'
         while True:
             choice_list = ['1 - Показать все фильмы',
                            '2 - Выбрать по жанру\n']
@@ -175,9 +184,9 @@ while True:
                 try:
                     with open(file, 'r', encoding='utf-8-sig') as file:
                         all_content = json.load(file)
+                        show_all(all_content)
                 except:
                     print('\n- Фильмов не найдено -\n')
-                show_all(all_content)   
             elif all_or_part == 2:
                 genre = choice_genre(genres_dict)
                 content = get_content(genre)
@@ -189,7 +198,8 @@ while True:
                 continue
             else:
                 print()
-                break           
+                break
+
     elif menu_choice == 2:  # Show films from your catalog
         while True:
             genre = choice_genre(genres_dict)
@@ -201,6 +211,7 @@ while True:
             else:
                 print()
                 break
+
     elif menu_choice == 3:  # Add film in 'Непросмотренные'
         while True:
             genre = choice_genre(genres_dict)
@@ -211,6 +222,7 @@ while True:
             else:
                 print()
                 break
+
     elif menu_choice == 4:  # Add film in catalog
         while True:
             genre = choice_genre(genres_dict)
@@ -222,6 +234,7 @@ while True:
             else:
                 print()
                 break
+
     elif menu_choice == 5:  # Delete film from 'Непросмотренные'
         while True:
             genre = choice_genre(genres_dict)
@@ -232,6 +245,7 @@ while True:
             else:
                 print()
                 break
+
     elif menu_choice == 6:  # Delete film from your catalogues
         while True:
             genre = choice_genre(genres_dict)
@@ -243,5 +257,6 @@ while True:
             else:
                 print()
                 break
+
     elif menu_choice == 7:  # close program
         break
