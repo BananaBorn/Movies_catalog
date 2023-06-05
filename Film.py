@@ -30,15 +30,15 @@ def choice_genre(dict_genres: Dict[int, str]) -> str:
 
 
 # Gets content from json file or make new json file
-def get_content(genre: str, in_file='Непросмотренные.json') -> Dict[str, List]:
+def get_content(genre_: str, in_file='Непросмотренные.json') -> Dict[str, List]:
     try:
         with open(in_file, 'r', encoding='utf-8-sig') as jsonfile:
-            content = json.load(jsonfile)
-    except:
+            filling = json.load(jsonfile)
+    except FileNotFoundError:
         with open(in_file, 'w', encoding='utf-8-sig') as jsonfile:
-            content = {genre: []}
-            json.dump(content, jsonfile, indent=4, ensure_ascii=False)
-    return content
+            filling = {genre_: []}
+            json.dump(filling, jsonfile, indent=4, ensure_ascii=False)
+    return filling
 
 
 # Checks if the new film is in the json file
@@ -83,7 +83,7 @@ def add_film(genre: str, content: Dict[str, List],
                 json.dump(content, out_file, indent=4,
                           ensure_ascii=False)
             print('\n- ФИЛЬМ УДАЧНО ДОБАВЛЕН! -\n')
-        except:
+        except FileNotFoundError:
             print('\n- Произошла ошибка! -\n')
         break
 
@@ -96,8 +96,7 @@ def show_films(content: Dict[str, List], genre: str) -> None:
     print(separator)
     for n, kino in enumerate(films_list, 1):
         print(f'{n})', end=' ')
-        show_list = ([f'{values}   |   ' for keys,
-        values in kino.items()])
+        show_list = ([f'{values}   |   ' for keys, values in kino.items()])
         print(*show_list)
     print(separator)
 
