@@ -43,10 +43,10 @@ def get_content(genre_: str, in_file='Непросмотренные.json') -> D
 
 # Checks if the new film is in the json file
 def checks_new_film(film_name: str, film_year: int,
-                    content: Dict[str, List]) -> bool:
+                    content_: Dict[str, List]) -> bool:
     flag = False
     try:
-        for line in content[genre]:
+        for line in content_[genre]:
             if film_name == line['name'] and film_year == line['year']:
                 print('\n- Есть такой фильм! -\n')
                 flag = True
@@ -60,13 +60,13 @@ def checks_new_film(film_name: str, film_year: int,
 
 
 # Adds new film in json file (rewriting json file)
-def add_film(genre: str, content: Dict[str, List],
-             file='Непросмотренные.json') -> None:
+def add_film(genre_: str, content_: Dict[str, List],
+             file_='Непросмотренные.json') -> None:
     while True:
         input_name = input('Введите название фильма >>> ')
         film_name = input_name.strip()
         film_year = checking_input('Введите год фильма >>> ')
-        if checks_new_film(film_name, film_year, content):
+        if checks_new_film(film_name, film_year, content_):
             break
         add_comment = checking_input(
             'Добавить комментарий?: 1 - ДА ; 2 - НЕТ >>> ',
@@ -77,10 +77,10 @@ def add_film(genre: str, content: Dict[str, List],
             film_comment = '-----'
         new_film = dict(name=film_name, year=film_year,
                         comment=film_comment)
-        content[genre].append(new_film)
+        content_[genre_].append(new_film)
         try:
-            with open(file, 'w', encoding='utf-8-sig') as out_file:
-                json.dump(content, out_file, indent=4,
+            with open(file_, 'w', encoding='utf-8-sig') as out_file:
+                json.dump(content_, out_file, indent=4,
                           ensure_ascii=False)
             print('\n- ФИЛЬМ УДАЧНО ДОБАВЛЕН! -\n')
         except FileNotFoundError:
@@ -89,10 +89,10 @@ def add_film(genre: str, content: Dict[str, List],
 
 
 # Show all films in chosen genre
-def show_films(content: Dict[str, List], genre: str) -> None:
-    films_list = content[genre]
+def show_films(content_: Dict[str, List], genre_: str) -> None:
+    films_list = content_[genre_]
     print(separator)
-    print(f'Фильмов в жанре "{genre}" найдено {len(films_list)} :')
+    print(f'Фильмов в жанре "{genre_}" найдено {len(films_list)} :')
     print(separator)
     for n, kino in enumerate(films_list, 1):
         print(f'{n})', end=' ')
@@ -102,22 +102,22 @@ def show_films(content: Dict[str, List], genre: str) -> None:
 
 
 # Delete film from content and rewriting json file
-def delete_film(genre: str, content: Dict[str, List],
-                file='Непросмотренные.json') -> None:
+def delete_film(genre_: str, content_: Dict[str, List],
+                file_='Непросмотренные.json') -> None:
     input_name = input('Введите название фильма >>> ')
     film_name = input_name.strip()
     film_year = checking_input('Введите год фильма >>> ')
-    new_content = {genre: []}
+    new_content = {genre_: []}
     try:
-        for line in content[genre]:
+        for line in content_[genre_]:
             old_name = line['name'].strip()
             if film_name == old_name and film_year == line['year']:
                 print('\n...Фильм найден...')
             else:
-                new_content[genre].append(line)
-        if len(content[genre]) > len(new_content[genre]):
+                new_content[genre_].append(line)
+        if len(content_[genre_]) > len(new_content[genre_]):
             try:
-                with open(file, 'w', encoding='utf-8-sig') as out_file:
+                with open(file_, 'w', encoding='utf-8-sig') as out_file:
                     json.dump(new_content, out_file, indent=4,
                               ensure_ascii=False)
                 print('\n- ФИЛЬМ УДАЧНО УДАЛЁН! -\n')
@@ -140,9 +140,9 @@ def repeat_or_exit() -> bool:
 
 
 # This func just for file 'Непросмотренные'
-def show_all(content: Dict[str, List]) -> None:
+def show_all(content_: Dict[str, List]) -> None:
     print(separator)
-    for genre, films in content.items():
+    for genre, films in content_.items():
         first = genre
         for film in films:
             print(first, end='  |  ')
