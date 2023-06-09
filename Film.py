@@ -23,8 +23,7 @@ def choice_genre(dict_genres: Dict[int, str]) -> str:
     print()
     for key, value in dict_genres.items():
         print(f'{key} - {value}')
-    num_of_genre = checking_input('\nВыберите жанр >>> ',
-                                  min_num=1, max_num=20)
+    num_of_genre = checking_input('\nВыберите жанр >>> ', 1, 20)
     print(f'\nВыбранный жанр -> {dict_genres[num_of_genre]}')
     return dict_genres[num_of_genre]
 
@@ -68,20 +67,16 @@ def add_film(genre_: str, content_: Dict[str, List],
         film_year = checking_input('Введите год фильма >>> ')
         if checks_new_film(film_name, film_year, content_):
             break
-        add_comment = checking_input(
-            'Добавить комментарий?: 1 - ДА ; 2 - НЕТ >>> ',
-            min_num=1, max_num=2)
-        if add_comment == 1:
+        add_comment = checking_input('Добавить комментарий?: 1 - ДА ; 2 - НЕТ >>> ', 1, 2)
+        if add_comment:
             film_comment = input('Напишите комментарий >>> ')
         else:
             film_comment = '-----'
-        new_film = dict(name=film_name, year=film_year,
-                        comment=film_comment)
+        new_film = dict(name=film_name, year=film_year, comment=film_comment)
         content_[genre_].append(new_film)
         try:
             with open(file_, 'w', encoding='utf-8-sig') as out_file:
-                json.dump(content_, out_file, indent=4,
-                          ensure_ascii=False)
+                json.dump(content_, out_file, indent=4, ensure_ascii=False)
             print('\n- ФИЛЬМ УДАЧНО ДОБАВЛЕН! -\n')
         except FileNotFoundError:
             print('\n- Произошла ошибка! -\n')
@@ -118,10 +113,9 @@ def delete_film(genre_: str, content_: Dict[str, List],
         if len(content_[genre_]) > len(new_content[genre_]):
             try:
                 with open(file_, 'w', encoding='utf-8-sig') as out_file:
-                    json.dump(new_content, out_file, indent=4,
-                              ensure_ascii=False)
+                    json.dump(new_content, out_file, indent=4, ensure_ascii=False)
                 print('\n- ФИЛЬМ УДАЧНО УДАЛЁН! -\n')
-            except NameError:
+            except FileNotFoundError:
                 print('\n- Не удалось открыть файл для удаления! -\n')
         else:
             print('\n- Фильм НЕ НАЙДЕН! -\n')
@@ -134,8 +128,7 @@ def repeat_or_exit() -> bool:
     exit_choice = ['Повторить действие', 'Выйти в главное меню']
     for i, value in enumerate(exit_choice, 1):
         print(f'{i} - {value}')
-    answer = checking_input('\nВыберите действие >>> ',
-                            min_num=1, max_num=2)
+    answer = checking_input('\nВыберите действие >>> ', 1, 2)
     return answer == 1
 
 
@@ -153,13 +146,11 @@ def show_all(content_: Dict[str, List]) -> None:
 
 
 genres_dict = {
-    1: "Боевики", 2: "Комедии", 3: "Фантастика",
-    4: "Ужасы", 5: "Мультфильмы", 6: "Катастрофы",
-    7: "Супергерои", 8: "Фэнтези", 9: "Приключения",
-    10: "Псевдодокументальные", 11: "Детективы",
-    12: "Про инопланетян", 13: "Про демонов", 14: "Вампиры",
-    15: "Зомби", 16: "Космос", 17: "Постапокалипсис",
-    18: "Сказки", 19: "Рождество", 20: "Достойные",
+    1: "Боевики", 2: "Комедии", 3: "Фантастика", 4: "Ужасы", 5: "Мультфильмы",
+    6: "Катастрофы", 7: "Супергерои", 8: "Фэнтези", 9: "Приключения",
+    10: "Псевдодокументальные", 11: "Детективы", 12: "Про инопланетян",
+    13: "Про демонов", 14: "Вампиры", 15: "Зомби", 16: "Космос",
+    17: "Постапокалипсис", 18: "Сказки", 19: "Рождество", 20: "Достойные",
 }
 separator = ('\n' + ('*' * 50) + '\n')
 
@@ -169,30 +160,26 @@ while True:
         menu = file.readlines()
         print(*menu)
 
-    menu_choice = checking_input('\nВыберите действие >>> ',
-                                 min_num=1, max_num=7)
+    menu_choice = checking_input('\nВыберите действие >>> ', 1, 7)
 
     if menu_choice == 1:  # Show films from 'Непросмотренные'
         while True:
-            choice_list = ['1 - Показать все фильмы',
-                           '2 - Выбрать по жанру\n']
-            print(*[f'\n{s}' for s in choice_list])
-            all_or_part = checking_input('Сделайте выбор >>> ',
-                                         min_num=1, max_num=2)
+            choice_list = ['1 - Показать все фильмы', '2 - Выбрать по жанру\n']
+            print(*(f'\n{s}' for s in choice_list))
+            all_or_part = checking_input('Сделайте выбор >>> ', 1, 2)
             if all_or_part == 1:
-                file = 'Непросмотренные.json'
                 try:
-                    with open(file, 'r', encoding='utf-8-sig') as file:
+                    with open('Непросмотренные.json', 'r', encoding='utf-8-sig') as file:
                         all_content = json.load(file)
                         show_all(all_content)
-                except NameError:
+                except FileNotFoundError:
                     print('\n- Фильмов не найдено -\n')
             elif all_or_part == 2:
                 genre = choice_genre(genres_dict)
                 content = get_content(genre)
                 try:
                     show_films(content, genre)
-                except TypeError:
+                except KeyError:
                     print('\n- Фильмов не найдено -\n')
                 else:
                     print('\n- Фильмов не найдено -\n')
@@ -214,7 +201,7 @@ while True:
                 print()
                 break
 
-    elif menu_choice == 3:  # Add film in 'Непросмотренные'
+    elif menu_choice == 3:  # Add film to 'Непросмотренные'
         while True:
             genre = choice_genre(genres_dict)
             content = get_content(genre)
