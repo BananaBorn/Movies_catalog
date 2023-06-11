@@ -3,7 +3,7 @@ from typing import Dict, List
 
 
 # Checking all choices in program. Returns result of user choice like digit
-def checking_input(txt: str, min_num=1960, max_num=2060) -> int:
+def checking_input(txt: str, min_num: int = 1960, max_num: int = 2060) -> int:
     while True:
         num = input(txt)
         if num.isdigit():
@@ -29,7 +29,7 @@ def choice_genre(dict_genres: Dict[int, str]) -> str:
 
 
 # Gets content from json file or make new json file
-def get_content(genre_: str, in_file='Непросмотренные.json') -> Dict[str, List]:
+def get_content(genre_: str, in_file: str = 'Непросмотренные.json') -> Dict[str, List]:
     try:
         with open(in_file, 'r', encoding='utf-8-sig') as jsonfile:
             filling = json.load(jsonfile)
@@ -60,7 +60,7 @@ def checks_new_film(film_name: str, film_year: int,
 
 # Adds new film in json file (rewriting json file)
 def add_film(genre_: str, content_: Dict[str, List],
-             file_='Непросмотренные.json') -> None:
+             file_: str = 'Непросмотренные.json') -> None:
     while True:
         input_name = input('Введите название фильма >>> ')
         film_name = input_name.strip()
@@ -98,7 +98,7 @@ def show_films(content_: Dict[str, List], genre_: str) -> None:
 
 # Delete film from content and rewriting json file
 def delete_film(genre_: str, content_: Dict[str, List],
-                file_='Непросмотренные.json') -> None:
+                file_: str = 'Непросмотренные.json') -> None:
     input_name = input('Введите название фильма >>> ')
     film_name = input_name.strip()
     film_year = checking_input('Введите год фильма >>> ')
