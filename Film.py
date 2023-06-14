@@ -2,8 +2,10 @@ import json
 from typing import Dict, List
 
 
-# Checking all choices in program. Returns result of user choice like digit
 def checking_input(txt: str, min_num: int = 1960, max_num: int = 2060) -> int:
+    """
+    Checking all choices in program. Returns result of user choice like digit
+    """
     while True:
         num = input(txt)
         if num.isdigit():
@@ -18,8 +20,8 @@ def checking_input(txt: str, min_num: int = 1960, max_num: int = 2060) -> int:
     return int(num)
 
 
-# returns the name of the genre
 def choice_genre(dict_genres: Dict[int, str]) -> str:
+    """Returns the name of the genre"""
     print()
     for key, value in dict_genres.items():
         print(f'{key} - {value}')
@@ -28,8 +30,8 @@ def choice_genre(dict_genres: Dict[int, str]) -> str:
     return dict_genres[num_of_genre]
 
 
-# Gets content from json file or make new json file
 def get_content(genre_: str, in_file: str = 'Непросмотренные.json') -> Dict[str, List]:
+    """Gets content from json file or make new json file"""
     try:
         with open(in_file, 'r', encoding='utf-8-sig') as jsonfile:
             filling = json.load(jsonfile)
@@ -40,9 +42,9 @@ def get_content(genre_: str, in_file: str = 'Непросмотренные.json
     return filling
 
 
-# Checks if the new film is in the json file
 def checks_new_film(film_name: str, film_year: int,
                     content_: Dict[str, List]) -> bool:
+    """Checks if the new film is in the json file"""
     flag = False
     try:
         for line in content_[genre]:
@@ -58,9 +60,9 @@ def checks_new_film(film_name: str, film_year: int,
     return flag
 
 
-# Adds new film in json file (rewriting json file)
 def add_film(genre_: str, content_: Dict[str, List],
              file_: str = 'Непросмотренные.json') -> None:
+    """Adds new film in json file (rewriting json file)"""
     while True:
         input_name = input('Введите название фильма >>> ')
         film_name = input_name.strip()
@@ -83,8 +85,8 @@ def add_film(genre_: str, content_: Dict[str, List],
         break
 
 
-# Show all films in chosen genre
 def show_films(content_: Dict[str, List], genre_: str) -> None:
+    """Show all films in chosen genre"""
     films_list = content_[genre_]
     print(separator)
     print(f'Фильмов в жанре "{genre_}" найдено {len(films_list)} :')
@@ -96,9 +98,9 @@ def show_films(content_: Dict[str, List], genre_: str) -> None:
     print(separator)
 
 
-# Delete film from content and rewriting json file
 def delete_film(genre_: str, content_: Dict[str, List],
                 file_: str = 'Непросмотренные.json') -> None:
+    """Delete film from content and rewriting json file"""
     input_name = input('Введите название фильма >>> ')
     film_name = input_name.strip()
     film_year = checking_input('Введите год фильма >>> ')
@@ -123,8 +125,8 @@ def delete_film(genre_: str, content_: Dict[str, List],
         print('\n- Фильм НЕ НАЙДЕН! -\n')
 
 
-# Func for choose repeat or go to main menu
 def repeat_or_exit() -> bool:
+    """Choose repeat or go to main menu"""
     exit_choice = ['Повторить действие', 'Выйти в главное меню']
     for i, value in enumerate(exit_choice, 1):
         print(f'{i} - {value}')
@@ -132,8 +134,8 @@ def repeat_or_exit() -> bool:
     return answer == 1
 
 
-# This func just for file 'Непросмотренные'
 def show_all(content_: Dict[str, List]) -> None:
+    """This func just for file 'Непросмотренные'"""
     print(separator)
     for genre_, films in content_.items():
         first = genre_
